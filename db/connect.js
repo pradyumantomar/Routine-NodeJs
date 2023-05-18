@@ -1,8 +1,5 @@
 const mongoose = require("mongoose");
 
-const connectionString =
-  "mongodb+srv://pradyuman:N9yw30RG3U5SHas2@taskapp.pgngh2n.mongodb.net/?retryWrites=true&w=majority";
+const db_instance = (url) => mongoose.connect(url);
 
-let db_instance = (url) => mongoose.connect(connectionString);
-
-module.export = db_instance;
+module.exports = db_instance;
