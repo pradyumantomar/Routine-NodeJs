@@ -11,9 +11,10 @@ const getAllTasks = async (req, res) => {
 
 const createTask = async (req, res) => {
   try {
-    const taskData = await Task.create(req.body);
-    res.status(201).json({ taskData });
+    const task = await Task.create(req.body);
+    res.status(201).json({ task });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ msg: error });
   }
 };
@@ -21,14 +22,14 @@ const createTask = async (req, res) => {
 const getTask = async (req, res) => {
   try {
     const { id: taskId } = req.params;
-    const taskData = await Task.findOne({ _id: taskId });
+    const task = await Task.findOne({ _id: taskId });
 
-    if (!taskData) {
+    if (!task) {
       res.status(404).json({ msg: `No Task with this Id : ${taskId}` });
       return;
     }
 
-    res.status(200).json({ taskData });
+    res.status(200).json({ task });
   } catch (error) {
     res.status(500).json({ msg: error });
   }
@@ -37,14 +38,14 @@ const getTask = async (req, res) => {
 const deleteTask = async (req, res) => {
   try {
     const { id: taskId } = req.params;
-    const taskData = await Task.findOneAndDelete({ _id: taskId });
+    const task = await Task.findOneAndDelete({ _id: taskId });
 
-    if (!taskData) {
+    if (!task) {
       res.status(404).json({ msg: `No task with this id : ${taskId}` });
       return;
     }
 
-    res.status(200).json({ taskData });
+    res.status(200).json({ task });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -53,12 +54,12 @@ const deleteTask = async (req, res) => {
 const updateTask = async (req, res) => {
   try {
     const { id: taskID } = req.params;
-    const taskData = await Task.findOneAndUpdate({ _id: taskID }, req.body, {
+    const task = await Task.findOneAndUpdate({ _id: taskID }, req.body, {
       new: true,
       runValidators: true,
     });
 
-    if (!taskData) {
+    if (!task) {
       res.status(404).json({ msg: `No task with this id : ${taskId}` });
       return;
     }
