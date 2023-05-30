@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const connectDB = require("./db/connect");
 require("dotenv").config();
 
@@ -8,7 +9,11 @@ const tasks = require("./routes/routes");
 const PORT = 3000;
 
 //middleware
+app.use(express.static("./public"));
 app.use(express.json());
+app.use(cors({ origin: "*" }));
+
+//routes
 app.use("/api/v1/tasks", tasks);
 
 const start = async () => {
@@ -23,9 +28,5 @@ const start = async () => {
     console.log(`Something Happend on the Way .. Please debug it =>  ${err}`);
   }
 };
-
-// app.get("/hello", (req, res) => {
-//   res.send("<h4>Hello<h4>");
-// });
 
 start();

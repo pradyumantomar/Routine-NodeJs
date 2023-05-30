@@ -2,8 +2,8 @@ const Task = require("../models/modelTask");
 
 const getAllTasks = async (req, res) => {
   try {
-    const taskData = await Task.find({});
-    res.status(200).json({ taskData });
+    const tasks = await Task.find({});
+    res.status(200).json({ tasks });
   } catch (error) {
     res.status(500).json({ msg: error });
   }
@@ -34,11 +34,6 @@ const getTask = async (req, res) => {
   }
 };
 
-const updateTask = (req, res) => {
-  res.send("Update a single existing Task");
-  console.log("Update a single Task");
-};
-
 const deleteTask = async (req, res) => {
   try {
     const { id: taskId } = req.params;
@@ -51,8 +46,23 @@ const deleteTask = async (req, res) => {
 
     res.status(200).json({ taskData });
   } catch (error) {
-    res.status.json({ error });
+    res.status(500).json({ error });
   }
+};
+
+const updateTask = async (req, res) => {
+  try {
+    const { id: taskID } = req.params;
+    const taskData = await Task.findOneAndUpdate({ _id: taskID }, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!taskData) {
+      res.status(404).json({ msg: `No task with this id : ${taskId}` });
+      return;
+    }
+  } catch (error) {}
 };
 
 module.exports = {
